@@ -36,27 +36,51 @@ public class Kermis {
 			System.out.println("6. Ladder Klimmen");
 			System.out.println("Voer o in voor de omzet");
 			System.out.println("Voer k in voor het aantal verkochte kaartjes");
-			String keuze = userInput();
-			if(keuze.equals("o")) {
-				System.out.println("De totale omzet is: " + kassa.getOmzet(attracties));
+			String keuze = "";
+			try {
+				keuze = userInput();
+				if(keuze.equals("o")) {
+					System.out.println("De totale omzet is: " + kassa.getOmzet(attracties));
+					System.out.println("Het totaal bedrag betaalde belasting is " + BelastingInspecteur.totaalBetaaldeBelasting);
 
+				}
+
+				else if (keuze.equals("k")) {
+					System.out.println("Het totaal aantal verkochte kaartjes is: " + checkKaartjes(attracties));
+				}
+
+				else {
+					int intKeuze = Integer.parseInt(keuze);
+					System.out.println(attracties.get(intKeuze-1).draaien());
+					if(Attractie.rondes == BelastingInspecteur.randomBezoek) {
+						BelastingInspecteur.belastingInnen(attracties);
+					}
+				}
+			}
+			catch(Exception e){
+				System.out.println(e.getMessage());
 			}
 
-			else if (keuze.equals("k")) {
-				System.out.println("Het totaal aantal verkochte kaartjes is: " + checkKaartjes(attracties));
-			}
-
-			else {
-				int intKeuze = Integer.parseInt(keuze);
-				System.out.println(attracties.get(intKeuze-1).draaien());
-
-			}
 		}
 	}
 
-	String userInput() {
+	String userInput() throws Exception {
 		Scanner sc_input = new Scanner(System.in);
-		return sc_input.nextLine();
+		String input = sc_input.nextLine();
+		boolean legal = false;
+		String[] allowedInput = {"1", "2", "3", "4", "5", "6", "o", "k"};
+		for(int i =0; i < allowedInput.length; i++) {
+			if(input.equals(allowedInput[i])) {
+				System.out.println(">>" + allowedInput[i]);
+				legal = true;
+				break;
+			}
+		}
+		if(!legal) {
+			throw new Exception("Geen valid input! Probeer opnieuw.");
+		}
+
+		return input;
 
 	}
 	int checkKaartjes(ArrayList<Attractie> attracties) {
@@ -70,4 +94,5 @@ public class Kermis {
 	String drawLine() {
 		return "--------------------------------------------------------------------------------";
 	}
+
 }

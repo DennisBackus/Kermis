@@ -1,52 +1,33 @@
 
 public abstract class Attractie {
 	static int kaartjesCount;
+	static int rondes;
 	int count;
 	String naam = "";
 	float price;
 	double oppervlakte;
 	double omzet;
-	double kansSpelBelasting;
-	String draaien(){
-
-		return "" + naam +  " staat nu aan";
-	}
-}
-abstract class RisicoRijkeAttractie extends Attractie{
-	int draaiLimiet;
-	boolean opstellingsKeuring(){
-
-		return false;
-	}
-}
-interface GokAttractie{
-
-	void kansSpelBelastingBetalen();
-
-}
-class BotsAuto extends Attractie{
+	double alBelasteOmzet;
 
 	String draaien(){
 		count++;
 		kaartjesCount++;
+		rondes++;
 		this.omzet = count * price;
 		return "" + naam +  " staat nu aan en is al " + count + " keer aan geweest";
 	}
-	BotsAuto(){
-		naam = "BotsAuto's";
-		price = 2.50f;
-
-
-	}
 }
+abstract class RisicoRijkeAttractie extends Attractie{
 
-class Spin extends RisicoRijkeAttractie{
-	int draaiLimiet = 5;
-	String draaien(){
-		count++;
-		kaartjesCount++;
-		this.omzet = count * price;
-		return "" + naam +  " staat nu aan en is al "  + count + " keer aan geweest";
+	int draaiLimiet=0;
+	
+	String draaien() {
+		if(opstellingsKeuring()) {
+			return "" + naam + " moet gekeurd worden, draailimiet is bereikt";
+		}
+		else {
+			return	super.draaien();
+		}
 	}
 	boolean opstellingsKeuring() {
 		if(count != 0 && count % draaiLimiet == 0) {
@@ -56,80 +37,81 @@ class Spin extends RisicoRijkeAttractie{
 			return false;
 		}
 	}
-	Spin(){
-		naam = "Spin";
-		price = 2.25f;
-	}
-
 }
+	interface GokAttractie{
+		
+	}
+	class BotsAuto extends Attractie{
 
-class SpiegelPaleis extends Attractie{
+		BotsAuto(){
+			naam = "BotsAuto's";
+			price = 2.50f;
 
-	String draaien(){
-		count++;
-		kaartjesCount++;
-		this.omzet = count * price;
-		return "" + naam +  " staat nu aan";
-	}
-	SpiegelPaleis(){
-		naam = "SpiegelPaleis";
-		price = 2.75f;
-	}
-}
 
-class SpookHuis extends Attractie{
-	String draaien(){
-		count++;
-		kaartjesCount++;
-		this.omzet = count * price;
-		return "" + naam +  " staat nu aan";
-	}
-	SpookHuis(){
-		naam = "SpookHuis";
-		price = 3.20f;
-	}
-}
-
-class Hawaii extends RisicoRijkeAttractie{
-	int draaiLimiet =10;
-	String draaien(){
-		count++;
-		kaartjesCount++;
-		this.omzet = count * price;
-		return "" + naam +  " staat nu aan";
-	}
-	boolean opstellingsKeuring() {
-		if(count != 0 && count % draaiLimiet == 0) {
-			return true;
-		}
-		else {
-			return false;
 		}
 	}
-	Hawaii(){
-		naam = "Hawaii";
-		price = 2.90f;
-	}
-}
 
-class LadderKlimmen extends Attractie implements GokAttractie{
+	class Spin extends RisicoRijkeAttractie implements GokAttractie{
+		
+		String draaien(){
+			return super.draaien();
+		}
 
-
-	String draaien(){
-		count++;
-		kaartjesCount++;
-		this.omzet = count * price;
-		kansSpelBelastingBetalen();
-		return "" + naam +  " staat nu aan";
-	}
-	LadderKlimmen(){
-		naam = "Ladder Klimmen";
-		price = 5.00f;
-	}
-	@Override
-	public void kansSpelBelastingBetalen() {
-		this.kansSpelBelasting = this.omzet * 0.3;
-		this.omzet *= 0.7;
+		boolean opstellingsKeuring() {
+			return super.opstellingsKeuring();
+		}
+		Spin(){
+			naam = "Spin";
+			price = 2.25f;
+			draaiLimiet = 5;
+		}
 
 	}
-}
+
+	class SpiegelPaleis extends Attractie{
+
+		SpiegelPaleis(){
+			naam = "SpiegelPaleis";
+			price = 2.75f;
+		}
+	}
+
+	class SpookHuis extends Attractie{
+		SpookHuis(){
+			naam = "SpookHuis";
+			price = 3.20f;
+		}
+	}
+
+	class Hawaii extends RisicoRijkeAttractie{
+		String draaien(){
+			return super.draaien();
+		}
+
+		boolean opstellingsKeuring() {
+			return super.opstellingsKeuring();
+		}
+
+		Hawaii(){
+			naam = "Hawaii";
+			price = 2.90f;
+			draaiLimiet =10;
+		}
+	}
+
+	class LadderKlimmen extends Attractie implements GokAttractie{
+
+
+		String draaien(){
+			count++;
+			kaartjesCount++;
+			rondes++;
+			this.omzet = count * price;
+			return "" + naam +  " staat nu aan";
+		}
+		LadderKlimmen(){
+			naam = "Ladder Klimmen";
+			price = 5.00f;
+		}
+
+	}
