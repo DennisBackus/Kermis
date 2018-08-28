@@ -64,25 +64,7 @@ public class Kermis {
 		}
 	}
 
-	String userInput() throws Exception {
-		Scanner sc_input = new Scanner(System.in);
-		String input = sc_input.nextLine();
-		boolean legal = false;
-		String[] allowedInput = {"1", "2", "3", "4", "5", "6", "o", "k"};
-		for(int i =0; i < allowedInput.length; i++) {
-			if(input.equals(allowedInput[i])) {
-				System.out.println(">>" + allowedInput[i]);
-				legal = true;
-				break;
-			}
-		}
-		if(!legal) {
-			throw new Exception("Geen valid input! Probeer opnieuw.");
-		}
 
-		return input;
-
-	}
 	int checkKaartjes(ArrayList<Attractie> attracties) {
 		int totalCount =0;
 		for(int i=0; i<attracties.size(); i++) {
@@ -95,4 +77,24 @@ public class Kermis {
 		return "--------------------------------------------------------------------------------";
 	}
 
+	String userInput() throws Exception {
+		Scanner sc_input = new Scanner(System.in);
+		String input = sc_input.nextLine();
+		boolean legal = false;
+		String[] allowedInput = {"1", "2", "3", "4", "5", "6", "o", "k"};
+		for(int i =0; i < allowedInput.length; i++) {
+			if(input.equals(allowedInput[i])) {
+				legal = true;
+				break;
+			}
+		}
+		if(!legal) {
+			throw new Exception("Geen valid input! Probeer opnieuw.");
+		}
+
+		return input;
+
+	}
 }
+
+

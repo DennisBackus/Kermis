@@ -1,3 +1,4 @@
+import java.util.Scanner;
 
 public abstract class Attractie {
 	static int kaartjesCount;
@@ -8,110 +9,127 @@ public abstract class Attractie {
 	double oppervlakte;
 	double omzet;
 	double alBelasteOmzet;
+	boolean moetReparatie;
 
 	String draaien(){
 		count++;
 		kaartjesCount++;
 		rondes++;
-		this.omzet = count * price;
+		this.omzet += price;
 		return "" + naam +  " staat nu aan en is al " + count + " keer aan geweest";
 	}
 }
 abstract class RisicoRijkeAttractie extends Attractie{
 
 	int draaiLimiet=0;
-	
+
+
 	String draaien() {
-		if(opstellingsKeuring()) {
-			return "" + naam + " moet gekeurd worden, draailimiet is bereikt";
+		try {
+			opstellingsKeuring();
 		}
-		else {
-			return	super.draaien();
+		catch(Exception e){
+			System.out.println(e.getMessage());
+			System.out.println("Druk op M om een monteur te roepen");
+			Scanner sc_input = new Scanner(System.in);
+			while(moetReparatie) {
+				String input = sc_input.nextLine();
+				if(input.equals("m")) {
+					moetReparatie = false; 
+					System.out.println("De monteur heeft " + naam + " succesvol gerepareerd");
+				}
+				else {
+					System.out.println("Dat is niet de monteur");
+				}
+			}
 		}
+		finally {
+			super.draaien();
+		}
+		return ""+ naam +  " staat nu aan en is al " + count + " keer aan geweest";
 	}
-	boolean opstellingsKeuring() {
+	void opstellingsKeuring() throws Exception{
 		if(count != 0 && count % draaiLimiet == 0) {
-			return true;
+			moetReparatie = true;
+			throw new Exception("Draai limiet bereikt");
 		}
-		else {
-			return false;
-		}
+
 	}
 }
-	interface GokAttractie{
-		
-	}
-	class BotsAuto extends Attractie{
+interface GokAttractie{
 
-		BotsAuto(){
-			naam = "BotsAuto's";
-			price = 2.50f;
+}
+class BotsAuto extends Attractie{
 
+	BotsAuto(){
+		naam = "BotsAuto's";
+		price = 2.50f;
 
-		}
-	}
-
-	class Spin extends RisicoRijkeAttractie implements GokAttractie{
-		
-		String draaien(){
-			return super.draaien();
-		}
-
-		boolean opstellingsKeuring() {
-			return super.opstellingsKeuring();
-		}
-		Spin(){
-			naam = "Spin";
-			price = 2.25f;
-			draaiLimiet = 5;
-		}
 
 	}
+}
 
-	class SpiegelPaleis extends Attractie{
+class Spin extends RisicoRijkeAttractie implements GokAttractie{
 
-		SpiegelPaleis(){
-			naam = "SpiegelPaleis";
-			price = 2.75f;
-		}
+	String draaien(){
+		return super.draaien();
 	}
 
-	class SpookHuis extends Attractie{
-		SpookHuis(){
-			naam = "SpookHuis";
-			price = 3.20f;
-		}
+	void opstellingsKeuring() throws Exception {
+		super.opstellingsKeuring();
+	}
+	Spin(){
+		naam = "Spin";
+		price = 2.25f;
+		draaiLimiet = 5;
 	}
 
-	class Hawaii extends RisicoRijkeAttractie{
-		String draaien(){
-			return super.draaien();
-		}
+}
 
-		boolean opstellingsKeuring() {
-			return super.opstellingsKeuring();
-		}
+class SpiegelPaleis extends Attractie{
 
-		Hawaii(){
-			naam = "Hawaii";
-			price = 2.90f;
-			draaiLimiet =10;
-		}
+	SpiegelPaleis(){
+		naam = "SpiegelPaleis";
+		price = 2.75f;
+	}
+}
+
+class SpookHuis extends Attractie{
+	SpookHuis(){
+		naam = "SpookHuis";
+		price = 3.20f;
+	}
+}
+
+class Hawaii extends RisicoRijkeAttractie{
+	String draaien(){
+		return super.draaien();
 	}
 
-	class LadderKlimmen extends Attractie implements GokAttractie{
-
-
-		String draaien(){
-			count++;
-			kaartjesCount++;
-			rondes++;
-			this.omzet = count * price;
-			return "" + naam +  " staat nu aan";
-		}
-		LadderKlimmen(){
-			naam = "Ladder Klimmen";
-			price = 5.00f;
-		}
-
+	void opstellingsKeuring() throws Exception {
+		super.opstellingsKeuring();
 	}
+
+	Hawaii(){
+		naam = "Hawaii";
+		price = 2.90f;
+		draaiLimiet =10;
+	}
+}
+
+class LadderKlimmen extends Attractie implements GokAttractie{
+
+
+	String draaien(){
+		count++;
+		kaartjesCount++;
+		rondes++;
+		this.omzet = count * price;
+		return "" + naam +  " staat nu aan";
+	}
+	LadderKlimmen(){
+		naam = "Ladder Klimmen";
+		price = 5.00f;
+	}
+
+}
