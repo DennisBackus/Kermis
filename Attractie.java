@@ -20,10 +20,7 @@ public abstract class Attractie {
 	}
 }
 abstract class RisicoRijkeAttractie extends Attractie{
-
 	int draaiLimiet=0;
-
-
 	String draaien() {
 		try {
 			opstellingsKeuring();
@@ -70,11 +67,6 @@ class BotsAuto extends Attractie{
 }
 
 class Spin extends RisicoRijkeAttractie implements GokAttractie{
-
-	String draaien(){
-		return super.draaien();
-	}
-
 	void opstellingsKeuring() throws Exception {
 		super.opstellingsKeuring();
 	}
@@ -102,10 +94,6 @@ class SpookHuis extends Attractie{
 }
 
 class Hawaii extends RisicoRijkeAttractie{
-	String draaien(){
-		return super.draaien();
-	}
-
 	void opstellingsKeuring() throws Exception {
 		super.opstellingsKeuring();
 	}
@@ -118,15 +106,6 @@ class Hawaii extends RisicoRijkeAttractie{
 }
 
 class LadderKlimmen extends Attractie implements GokAttractie{
-
-
-	String draaien(){
-		count++;
-		kaartjesCount++;
-		rondes++;
-		this.omzet = count * price;
-		return "" + naam +  " staat nu aan";
-	}
 	LadderKlimmen(){
 		naam = "Ladder Klimmen";
 		price = 5.00f;
